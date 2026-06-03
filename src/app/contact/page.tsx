@@ -5,126 +5,60 @@ import { motion, useInView } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const inView = useInView(ref, { once: true, margin: '-60px' });
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, delay, ease: [0.23, 1, 0.32, 1] }} className={className}>
+    <motion.div ref={ref} initial={{ opacity: 0, y: 25 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay, ease: [0.23, 1, 0.32, 1] }}>
       {children}
     </motion.div>
   );
 }
 
 export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
+  const [sent, setSent] = useState(false);
 
   return (
     <>
       <Navbar />
-      <main className="pt-32">
-        {/* Hero */}
-        <section className="pb-20">
-          <div className="mx-auto max-w-6xl px-6 text-center">
-            <Reveal>
-              <span className="text-xs text-[#00F5FF] uppercase tracking-[0.3em] mb-4 block">Contact</span>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h1 className="text-[clamp(40px,7vw,96px)] font-black tracking-[-0.04em] leading-[0.95] mb-6 font-[family-name:var(--font-display)]">
-                Enter The Vault
-              </h1>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <p className="text-lg text-[#A1A1AA] max-w-2xl mx-auto leading-relaxed">
-                Ready to access CELLAR? Get in touch with our team or join the network directly.
-              </p>
-            </Reveal>
+      <main className="pt-28">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <Reveal><span className="text-[10px] text-[#00F5FF] uppercase tracking-[0.3em] mb-4 block">Contact</span></Reveal>
+            <Reveal delay={0.1}><h1 className="text-[clamp(40px,7vw,80px)] font-bold tracking-[-0.04em] leading-[0.95] mb-6">Enter The Vault</h1></Reveal>
+            <Reveal delay={0.2}><p className="text-base text-[#A1A1AA] max-w-lg mx-auto">Ready to access CELLAR? Get in touch.</p></Reveal>
           </div>
-        </section>
 
-        {/* Form */}
-        <section className="py-16">
-          <div className="mx-auto max-w-xl px-6">
-            <Reveal>
-              {submitted ? (
-                <div className="glass-card p-12 text-center glow-neural">
-                  <div className="text-4xl mb-4">✓</div>
-                  <h3 className="text-2xl font-bold mb-2 font-[family-name:var(--font-display)]">Message Received</h3>
-                  <p className="text-[#A1A1AA]">We'll respond within 24 hours. Welcome to CELLAR.</p>
+          <div className="max-w-lg mx-auto">
+            <Reveal delay={0.1}>
+              {sent ? (
+                <div className="glass rounded-2xl p-12 text-center">
+                  <div className="text-3xl mb-3">✓</div>
+                  <h3 className="text-xl font-semibold mb-1">Message Received</h3>
+                  <p className="text-sm text-[#A1A1AA]">We'll respond within 24 hours.</p>
                 </div>
               ) : (
-                <form
-                  onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
-                  className="glass-card p-8 md:p-12 space-y-6"
-                >
+                <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="glass rounded-2xl p-8 space-y-5">
                   <div>
-                    <label className="text-xs text-[#A1A1AA] uppercase tracking-widest mb-2 block">Name</label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-xl px-4 py-3 text-sm text-white placeholder-[#555] focus:outline-none focus:border-[#00F5FF]/40 transition-colors"
-                      placeholder="Your name"
-                    />
+                    <label className="text-[10px] text-[#555] uppercase tracking-[0.15em] mb-1.5 block">Name</label>
+                    <input type="text" required className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#00F5FF]/30 transition-colors" placeholder="Your name" />
                   </div>
                   <div>
-                    <label className="text-xs text-[#A1A1AA] uppercase tracking-widest mb-2 block">Email</label>
-                    <input
-                      type="email"
-                      required
-                      className="w-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-xl px-4 py-3 text-sm text-white placeholder-[#555] focus:outline-none focus:border-[#00F5FF]/40 transition-colors"
-                      placeholder="your@email.com"
-                    />
+                    <label className="text-[10px] text-[#555] uppercase tracking-[0.15em] mb-1.5 block">Email</label>
+                    <input type="email" required className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#00F5FF]/30 transition-colors" placeholder="your@email.com" />
                   </div>
                   <div>
-                    <label className="text-xs text-[#A1A1AA] uppercase tracking-widest mb-2 block">Subject</label>
-                    <select className="w-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00F5FF]/40 transition-colors">
-                      <option value="">Select a topic</option>
-                      <option value="access">Request Access</option>
-                      <option value="partnership">Partnership</option>
-                      <option value="technical">Technical Inquiry</option>
-                      <option value="general">General</option>
-                    </select>
+                    <label className="text-[10px] text-[#555] uppercase tracking-[0.15em] mb-1.5 block">Message</label>
+                    <textarea rows={5} required className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#00F5FF]/30 transition-colors resize-none" placeholder="Tell us about your project..." />
                   </div>
-                  <div>
-                    <label className="text-xs text-[#A1A1AA] uppercase tracking-widest mb-2 block">Message</label>
-                    <textarea
-                      rows={5}
-                      required
-                      className="w-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-xl px-4 py-3 text-sm text-white placeholder-[#555] focus:outline-none focus:border-[#00F5FF]/40 transition-colors resize-none"
-                      placeholder="Tell us about your project..."
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full magnetic-btn px-8 py-4 rounded-full text-sm font-semibold bg-gradient-to-r from-[#00F5FF] to-[#6D28FF] text-black hover:shadow-[0_0_30px_rgba(0,245,255,0.2)] transition-all duration-300"
-                  >
+                  <button type="submit" className="w-full py-3.5 rounded-full text-sm font-medium bg-gradient-to-r from-[#00F5FF] to-[#6D28FF] text-black hover:shadow-[0_0_30px_rgba(0,245,255,0.15)] transition-shadow duration-300">
                     Send Message
                   </button>
                 </form>
               )}
             </Reveal>
           </div>
-        </section>
-
-        {/* Direct Access */}
-        <section className="py-20">
-          <div className="mx-auto max-w-4xl px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { icon: '📧', title: 'Email', value: 'team@cellar.ai' },
-                { icon: '💬', title: 'Discord', value: 'discord.gg/cellar' },
-                { icon: '🐦', title: 'Twitter', value: '@cellar_ai' },
-              ].map((c, i) => (
-                <Reveal key={c.title} delay={i * 0.1}>
-                  <div className="glass-card p-8 text-center cursor-pointer group">
-                    <span className="text-2xl mb-3 block">{c.icon}</span>
-                    <div className="text-sm text-[#A1A1AA] mb-1">{c.title}</div>
-                    <div className="text-sm font-medium text-white group-hover:text-[#00F5FF] transition-colors">{c.value}</div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        </div>
       </main>
       <Footer />
     </>
